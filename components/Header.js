@@ -43,7 +43,8 @@ const NavAndIconsWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   flex: 1;
-  margin-left: 20px;
+  // margin-left: 20px;
+  margin-right: 50px; 
 `;
 
 const IconsWrapper = styled.div`
@@ -100,13 +101,13 @@ export default function Header() {
                         <IconsWrapper>
                             <SearchWrapper>
                                 <SearchInput type="text" placeholder="搜尋商品" />
-                                <Image src="/icons/search.png" alt="搜索" width="20" height="20"/>
+                                {/* <Image src="/icons/search.png" alt="搜索" width="20" height="20"/> */}
                             </SearchWrapper>
-                            <IconLink href="/account">
-                                <Image src="/icons/user.png" alt="用戶" width="24" height="24"/>
+                            <IconLink href="/signup">
+                                <Image src="/items/member.png" alt="用戶" width="24" height="24"/>
                             </IconLink>
                             <IconLink href="/cart">
-                                <Image src="/icons/cart.png" alt="購物車" width="24" height="24"/>
+                                <Image src="/items/cart.png" alt="購物車" width="24" height="24"/>
                                 <span style={{backgroundColor: '#ff1f56', color: 'white', borderRadius: '50%', padding: '2px 6px', fontSize: '12px', marginLeft: '2px'}}>0</span>
                             </IconLink>
                             <LanguageSelector>
@@ -117,7 +118,7 @@ export default function Header() {
                     </NavAndIconsWrapper>
                 </Wrapper>
             </MainHeader>
-            <DynamicCarousel />
+           
         </div>
     );
 }

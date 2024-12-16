@@ -69,7 +69,7 @@ const Dot = styled.span`
 `;
 
 const images = [
-  '/avatars/Logo.png',
+  '/avatars/Logo4.png',
   '/avatars/Logo1.png',
   '/avatars/Logo2.png',
   '/avatars/Logo3.png',

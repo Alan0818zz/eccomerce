@@ -1,7 +1,7 @@
 import localFont from "next/font/local";
 import GlobalStyles from './client/GlobalStyles';
 import '@/styles/globals.css';
-
+import Header from '@/components/Header';  // 引入 Header 組件
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -21,7 +21,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Header />  {/* 添加 Header 組件 */}
+        {children}
+      </body>
     </html>
   );
 }

@@ -15,6 +15,24 @@ const toys = [
         price: 'NT$2,460',
         imageUrl: '/avatars/Logo1.png'
     },
+    {
+      id: 3,
+      name: '[再版] Daibadi Production 機器新人類 Polynian Motoroid Pink',
+      price: 'NT$2,460',
+      imageUrl: '/toyzs/car.jpg'
+  },
+  {
+    id: 4,
+    name: '[TW數量限定] SEGA 景品 葬送的芙莉蓮 PM坐姿公仔 透明捲髮芙莉蓮 2505',
+    price: 'NT$$550',
+    imageUrl: '/toyzs/girl.jpg'
+},
+{
+  id: 5,
+  name: '[再版] Daibadi Production 機器新人類 Polynian Motoroid Pink',
+  price: 'NT$2,460',
+  imageUrl: '/toyzs/R35.jpg'
+},
     // 可以继续添加更多商品...
 ];
 
@@ -121,14 +139,11 @@ const LogoWrapper = styled.div`
 `;
 export default function ToysCollectionPage() {
   return (
-     
-
-    
     <Container>
         <LogoWrapper>
-                        <Link href="/">
-                            <Image src="/avatars/Logo.png" alt="東海模型" width="180" height="70"/>
-                        </Link>
+            <Link href="/">
+                  <Image src="/avatars/Logo.png" alt="東海模型" width="180" height="70"/>
+            </Link>
         </LogoWrapper>
       <TopBar>
         <ItemCount>共 {toys.length} 項商品</ItemCount>
