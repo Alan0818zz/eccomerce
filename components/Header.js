@@ -1,10 +1,10 @@
 "use client";
-import React from 'react';
+
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import Image from "next/image";
 import Link from "next/link";
-
+import React, { useState, useEffect, useRef } from 'react';
 const DynamicNavbar = dynamic(() => import("@/components/Navbar"), { ssr: false });
 const DynamicCarousel = dynamic(() => import("@/components/Carousel"), { ssr: false });
 
@@ -81,7 +81,54 @@ const LanguageSelector = styled.div`
   cursor: pointer;
 `;
 
+const UserDropdown = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const DropdownContent = styled.div`
+  display: ${props => props.$isOpen ? 'block' : 'none'};
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: #fff;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1000;
+  border-radius: 4px;
+  margin-top: 8px;
+`;
+
+const DropdownItem = styled(Link)`
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
+`;
+
 export default function Header() {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    // 點擊外部關閉下拉選單
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     return (
         <div>
             <StyledHeader>
@@ -101,15 +148,30 @@ export default function Header() {
                         <IconsWrapper>
                             <SearchWrapper>
                                 <SearchInput type="text" placeholder="搜尋商品" />
-                                {/* <Image src="/icons/search.png" alt="搜索" width="20" height="20"/> */}
                             </SearchWrapper>
-                            <IconLink href="/signup">
-                                <Image src="/items/member.png" alt="用戶" width="24" height="24"/>
-                            </IconLink>
+                            
+                            <UserDropdown ref={dropdownRef}>
+                                <IconLink 
+                                    as="div" 
+                                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <Image src="/items/member.png" alt="用戶" width="24" height="24"/>
+                                </IconLink>
+                                <DropdownContent $isOpen={isDropdownOpen}>
+                                    <DropdownItem href="/orders">訂單查詢</DropdownItem>
+                                    <DropdownItem href="/member">會員專區</DropdownItem>
+                                    <DropdownItem href="/favorites">我的收藏</DropdownItem>
+                                    <DropdownItem href="/coupons">我的優惠券</DropdownItem>
+                                    <DropdownItem href="/signin">會員登入/註冊</DropdownItem>
+                                </DropdownContent>
+                            </UserDropdown>
+
                             <IconLink href="/cart">
                                 <Image src="/items/cart.png" alt="購物車" width="24" height="24"/>
                                 <span style={{backgroundColor: '#ff1f56', color: 'white', borderRadius: '50%', padding: '2px 6px', fontSize: '12px', marginLeft: '2px'}}>0</span>
                             </IconLink>
+                            
                             <LanguageSelector>
                                 <span>TWD</span>
                                 <span>▼</span>
@@ -118,7 +180,6 @@ export default function Header() {
                     </NavAndIconsWrapper>
                 </Wrapper>
             </MainHeader>
-           
         </div>
     );
 }

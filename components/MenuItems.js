@@ -77,8 +77,8 @@ const MenuItems = ({ items, depthLevel }) => {
                         aria-haspopup="menu"
                         aria-expanded={dropdown ? "true" : "false"}
                         onClick={() => setDropdown((prev) => !prev)}
-                        isOpen={dropdown}
-                        depthLevel={depthLevel}
+                        data-isopen={dropdown}      // 方案1：使用 data- 属性
+                        data-depth={depthLevel}
                     >
                         {items.title}{" "}
                         {depthLevel > 0 ? <span>&raquo;</span> : <span className="arrow"></span>}

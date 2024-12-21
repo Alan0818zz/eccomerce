@@ -1,8 +1,7 @@
 'use server'
 import { register } from '@/lib/UserService'
 import { SignupFormSchema } from '../lib/definitions'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+
 export async function signup(state,formData) {
     const validatedFields = SignupFormSchema.safeParse({
       name: formData.get('name'),

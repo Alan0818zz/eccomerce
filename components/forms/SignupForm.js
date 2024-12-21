@@ -1,6 +1,7 @@
 'use client'
-import { useFormState, useFormStatus } from 'react-dom'
-import { signup } from '@/app/action/auth'
+import { useActionState } from 'react'
+import { useFormStatus } from 'react-dom'
+import { signup } from '@/app/data/actions/auth-actions'
 import styled from 'styled-components'
 
 // 樣式組件
@@ -89,7 +90,7 @@ const Subtitle = styled.p`
   font-size: 0.875rem;
 `
 export function SignupForm() {
-  const [state, action] = useFormState(signup, undefined)
+  const [state, action] = useActionState(signup, undefined)
 
   return (
     
@@ -103,7 +104,17 @@ export function SignupForm() {
         <Input id="name" name="name" placeholder="John Doe" />
         {state?.errors?.name && <ErrorMessage>{state.errors.name}</ErrorMessage>}
       </FormGroup>
-
+      <FormGroup>
+    <Label htmlFor="phone">手機號碼</Label>
+    <Input 
+        id="phone" 
+        name="phone" 
+        placeholder="0912345678"
+        type="tel"
+        pattern="09[0-9]{8}"
+        />
+        {state?.errors?.phone && <ErrorMessage>{state.errors.phone}</ErrorMessage>}
+      </FormGroup>
       <FormGroup>
         <Label htmlFor="email">Email</Label>
         <Input id="email" name="email" placeholder="john@example.com" />

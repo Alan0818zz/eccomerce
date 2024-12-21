@@ -14,7 +14,7 @@ const CarouselContainer = styled.div`
 const CarouselTrack = styled.div`
     display: flex;
     transition: transform 0.75s ease-in-out;
-    transform: translateX(-${props => props.currentIndex * 100}%);
+    transform: translateX(-${props => props.$currentIndex * 100}%);
     width: 100%;
     height: 100%;
 `;
@@ -59,13 +59,13 @@ const DotsContainer = styled.div`
 `;
 
 const Dot = styled.span`
-  height: 12px;
-  width: 12px;
-  background-color: ${props => props.active ? '#333333' : 'rgba(128,128,128,0.5)'};
-  border-radius: 50%;
-  display: inline-block;
-  margin: 0 8px;
-  cursor: pointer;
+    height: 12px;
+    width: 12px;
+    background-color: ${props => props.$active ? '#333333' : 'rgba(128,128,128,0.5)'};
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 8px;
+    cursor: pointer;
 `;
 
 const images = [
@@ -97,7 +97,7 @@ export default function Carousel() {
     return (
         <CarouselContainer>
             <CarouselButton onClick={prevSlide}>&#10094;</CarouselButton>
-            <CarouselTrack currentIndex={currentIndex} totalImages={images.length}>
+            <CarouselTrack $currentIndex={currentIndex} $totalImages={images.length}>
                 {images.map((image, index) => (
                     <ImageWrapper key={index}>
                         <CarouselImage 
@@ -115,7 +115,7 @@ export default function Carousel() {
                 {images.map((_, index) => (
                     <Dot
                         key={index}
-                        active={index === currentIndex}
+                        $active={index === currentIndex}
                         onClick={() => setCurrentIndex(index)}
                     />
                 ))}

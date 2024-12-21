@@ -1,7 +1,7 @@
 'use client'
 import { useFormStatus } from 'react-dom'
 import { useActionState } from 'react'
-import { signup } from '@/app/data/actions/auth-actions'
+import { loginAction } from '@/app/data/actions/auth-actions'
 import styled from 'styled-components'
 import Link from 'next/link'
 
@@ -147,39 +147,28 @@ const Footer = styled.div`
   }
 `
 
-export function SignupForm() {
-  const [state, action] = useActionState(signup, undefined)
+export function SigninForm() {
+  const [state, action] = useActionState(loginAction, undefined)
 
   return (
     <FormContainer action={action}>
       <FormHeader>
-        <Title>創建帳號</Title>
+        <Title>會員登入</Title>
         <Subtitle>
-          加入我們的會員，享受更多優惠與服務
+          歡迎回來！請登入您的帳號
         </Subtitle>
       </FormHeader>
-
-      <FormGroup>
-        <Label htmlFor="name">姓名</Label>
-        <Input 
-          id="name" 
-          name="name" 
-          placeholder="請輸入您的姓名" 
-          autoComplete="name"
-        />
-        {state?.errors?.name && <ErrorMessage>{state.errors.name}</ErrorMessage>}
-      </FormGroup>
 
       <FormGroup>
         <Label htmlFor="email">電子郵件</Label>
         <Input 
           id="email" 
           name="email" 
-          type="email"
+          type="text"
           placeholder="請輸入您的電子郵件" 
           autoComplete="email"
         />
-        {state?.errors?.email && <ErrorMessage>{state.errors.email}</ErrorMessage>}
+        {state?.error && <ErrorMessage>{state.error}</ErrorMessage>}
       </FormGroup>
 
       <FormGroup>
@@ -188,26 +177,16 @@ export function SignupForm() {
           id="password" 
           name="password" 
           type="password" 
-          placeholder="請設定密碼"
-          autoComplete="new-password"
+          placeholder="請輸入密碼"
+          autoComplete="current-password"
         />
-        {state?.errors?.password && (
-          <div>
-            <ErrorMessage>密碼必須符合以下條件：</ErrorMessage>
-            <ErrorList>
-              {state.errors.password.map((error) => (
-                <li key={error}>{error}</li>
-              ))}
-            </ErrorList>
-          </div>
-        )}
       </FormGroup>
       
       <SubmitButton />
 
       <Footer>
-        已經有帳號了？
-        <Link href="/login">立即登入</Link>
+        還沒有帳號？
+        <Link href="/signup">立即註冊</Link>
       </Footer>
     </FormContainer>
   )
@@ -218,7 +197,29 @@ function SubmitButton() {
 
   return (
     <Button disabled={pending} type="submit">
-      {pending ? '註冊中...' : '立即註冊'}
+      {pending ? '登入中...' : '登入'}
     </Button>
   )
 }
+
+// 可以添加忘記密碼的連結
+const ForgotPassword = styled.div`
+  text-align: right;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  
+  a {
+    color: #4a90e2;
+    font-size: 0.85rem;
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`
+
+// 如果需要，可以在密碼欄位下方添加忘記密碼連結：
+{/* <ForgotPassword>
+  <Link href="/forgot-password">忘記密碼？</Link>
+</ForgotPassword> */}

@@ -12,9 +12,9 @@ const DropdownMenu = styled.ul`
   list-style: none;
   background-color: #fff;
   border-radius: 0.5rem;
-  display: ${props => props.dropdown ? 'block' : 'none'};
+  display: ${props => props.$dropdown ? 'block' : 'none'};
 
-  ${props => props.depthLevel > 1 ? `
+  ${props => props.$depthLevel > 1 ? `
     position: absolute;
     left: 100%;
     top: -7px;
@@ -29,7 +29,11 @@ const Dropdown = ({ submenus, dropdown, depthLevel }) => {
   depthLevel = depthLevel + 1;
   const dropdownClass = depthLevel > 1 ? "dropdown-submenu" : "";
   return (
-    <DropdownMenu className={`dropdown ${dropdownClass}`} dropdown={dropdown} depthLevel={depthLevel}>
+    <DropdownMenu 
+      className={`dropdown ${dropdownClass}`} 
+      $dropdown={dropdown} 
+      $depthLevel={depthLevel}
+    >
       {submenus.map((submenu, index) => (
         <MenuItems items={submenu} key={index} depthLevel={depthLevel} />
       ))}

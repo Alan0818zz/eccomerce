@@ -4,7 +4,7 @@ const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:80';
 
 export async function register(registerData) {
   try {
-    console.log('Sending data:', registerData); // 添加這行來檢查
+    // console.log('Sending data:', registerData); // 添加這行來檢查
     const response = await fetch(`${API_URL}/api/auth/register`, {
       method: 'POST',
       headers: {
@@ -12,7 +12,7 @@ export async function register(registerData) {
       },
       body: JSON.stringify(registerData)
     });
-
+    console.log('Response:', response);
     const data = await response.json();
     
     return {
@@ -40,11 +40,12 @@ export async function login(loginData) {
     });
 
     const data = await response.json();
-    
+
+    // console.log(data);
     return {
       status: response.ok,
       message: data.message || '',
-      data: data.data
+      data: data
     };
   } catch (error) {
     return {
