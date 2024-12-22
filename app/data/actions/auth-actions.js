@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 export async function signup(state,formData) {
     const validatedFields = SignupFormSchema.safeParse({
       name: formData.get('name'),
+      phone: formData.get('phone'),
       email: formData.get('email'),
       password: formData.get('password'),
     })
@@ -19,7 +20,7 @@ export async function signup(state,formData) {
     id: crypto.randomUUID(), // 生成一個 UUID,
     name: validatedFields.data.name,    // varchar
     member_status: 0,                   // integer, not null, 預設 0 停用
-    phone: "09090909090",                   // varchar, unique, not null
+    phone: validatedFields.data.phone,  // varchar, unique, not null
     email: validatedFields.data.email, // varchar, unique, not null
     verified: 0,                       // integer, not null, 預設 0 未驗證
     permission: 1,                    // integer, not null, 預設 1 一般會員

@@ -1,7 +1,7 @@
 'use server'
 
-import { register as apiRegister, login as apiLogin } from '../../api/authapi'
-import { createSession, deleteSession } from '../../lib/session'
+import { register as apiRegister, login as apiLogin, getUserDetails} from '../../api/authapi'
+import { createSession, deleteSession, checkAuth } from '../../lib/session'
 
 export async function register(registerData) {
     try {
@@ -52,7 +52,33 @@ export async function login(loginData) {
         }
     }
 }
+// 添加檢查登入狀態的函數
+export async function getCurrentUser() {
+  const { isAuthenticated, userId } = await checkAuth()
+  
+  if (!isAuthenticated) {
+    return {
+      isAuthenticated: false,
+      user: null
+    }
+  }
 
+  try {
+
+    const userDetails = await getUserDetails(userId)
+    return {
+      isAuthenticated: true,
+      user: userDetails
+    }
+  } catch (error) {
+    console.error('獲取用戶信息失敗:', error)
+    return {
+      isAuthenticated: true,
+      user: { id: userId }
+    }
+  }
+}
+// 登出
 export async function logout() {
     try {
         await deleteSession();

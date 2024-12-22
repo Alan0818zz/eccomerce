@@ -48,15 +48,46 @@ export async function createSession(userId) {
 }
 
 export async function getSession() {
-  const cookieStore = await cookies()
-  const sessionCookie = cookieStore.get(cookie.name)?.value
-  const session = await decrypt(sessionCookie)
-  if (!session?.userId) {
-      // redirect('/login')
-  }
-  return { userId: session.userId }
+    try {
+        const cookieStore = await cookies()
+        const sessionCookie = cookieStore.get(cookie.name)?.value
+        if (!sessionCookie) {
+            return null
+        }
+    
+        const session = await decrypt(sessionCookie)
+        if (!session?.userId) {
+          return null
+        }
+        return { userId: session.userId }
+      } catch (error) {
+        console.error('獲取 session 時發生錯誤:', error)
+        return null
+      }
+//   const cookieStore = await cookies()
+//   const sessionCookie = cookieStore.get(cookie.name)?.value
+//   const session = await decrypt(sessionCookie)
+//   if (!session?.userId) {
+//       // redirect('/login')
+//   }
+//   return { userId: session.userId }
 }
-
+// 用於需要登入的頁面
+export async function requireAuth() {
+    const session = await getSession()
+    if (!session) {
+      redirect('/signin')
+    }
+    return session
+  }
+// 檢查登入狀態但不重定向
+export async function checkAuth() {
+    const session = await getSession()
+    return {
+      isAuthenticated: !!session,
+      userId: session?.userId
+    }
+  }
 export async function deleteSession() {
   const cookieStore = await cookies()
   cookieStore.delete(cookie.name)
