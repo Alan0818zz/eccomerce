@@ -4,7 +4,6 @@ import DynamicCarousel from '@/components/Carousel'
 export default function HomePage(){
     return(
         <div>
-            
             <DynamicCarousel />
             <CategoryNav />
         </div>

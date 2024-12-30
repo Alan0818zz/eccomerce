@@ -74,8 +74,7 @@ export async function loginAction(prevState, formData) {
           error: result.message || '登入失敗，請檢查帳號密碼是否正確'
         }
       }
-  
-      // redirect('/');
+      return { success: true };
     } catch (error) {
       console.error('登入錯誤:', error);
       return {

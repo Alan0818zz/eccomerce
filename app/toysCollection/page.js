@@ -2,35 +2,38 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 import Link from 'next/link'
+import AddToCart from '@/components/AddToCart';
+import CartSidebar from '@/components/cart/CartSidebar';
+import { useCart } from '@/context/cart-context'
 const toys = [
     {
         id: 1,
         name: '限定發光版 Ignition model 1/18 頭文字D 藤原文太 速霸陸 INITIAL D SUBARU Impreza WRX type R STi Version V (GC8) Blue With LED light IG3539',
-        price: 'NT$13,800',
+        price: 13800,
         imageUrl: '/toyzs/Ignition model.jpg'
     },
     {
         id: 2,
         name: '[再版] Daibadi Production 機器新人類 Polynian Motoroid Pink',
-        price: 'NT$2,460',
+        price: 2460,
         imageUrl: '/avatars/Logo1.png'
     },
     {
       id: 3,
       name: '[再版] Daibadi Production 機器新人類 Polynian Motoroid Pink',
-      price: 'NT$2,460',
+      price: 2460,
       imageUrl: '/toyzs/car.jpg'
   },
   {
     id: 4,
     name: '[TW數量限定] SEGA 景品 葬送的芙莉蓮 PM坐姿公仔 透明捲髮芙莉蓮 2505',
-    price: 'NT$$550',
+    price: 2460,
     imageUrl: '/toyzs/girl.jpg'
 },
 {
   id: 5,
   name: '[再版] Daibadi Production 機器新人類 Polynian Motoroid Pink',
-  price: 'NT$2,460',
+  price: 2460,
   imageUrl: '/toyzs/R35.jpg'
 },
     // 可以继续添加更多商品...
@@ -40,6 +43,7 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+   position: relative; // 添加這行
 `;
 
 const TopBar = styled.div`
@@ -77,7 +81,7 @@ const ProductGrid = styled.div`
   gap: 20px;
 `;
 
-const ProductCard = styled.div`
+const StyledProductCard = styled.div`
   border: 1px solid #eee;
   border-radius: 8px;
   overflow: hidden;
@@ -137,53 +141,70 @@ const IconButton = styled.button`
 const LogoWrapper = styled.div`
   flex: 0 0 auto;
 `;
-export default function ToysCollectionPage() {
+
+const ProductCardItem = ({ toy }) => {
   return (
-    <Container>
-        <LogoWrapper>
-            <Link href="/">
-                  <Image src="/avatars/Logo.png" alt="東海模型" width="180" height="70"/>
-            </Link>
-        </LogoWrapper>
+    <StyledProductCard key={toy.id}>
+      <ImageWrapper>
+        <Image
+          src={toy.imageUrl}
+          alt={toy.name}
+          fill
+          style={{ objectFit: 'cover' }}
+        />
+      </ImageWrapper>
+      <ProductInfo>
+        <ProductName>{toy.name}</ProductName>
+        <Price>NT${toy.price}</Price>
+      </ProductInfo>
+      <ActionBar>
+        <IconButton>❤️</IconButton>
+        <AddToCart product={{
+          id: toy.id,
+          name: toy.name,
+          price: toy.price, // 直接使用數字，不需要轉換
+          image: toy.imageUrl
+        }} />
+      </ActionBar>
+    </StyledProductCard>
+  );
+};
+export default function ToysCollectionPage() {
+  const { toggleCart } = useCart()  // 添加這行
+  return (
+    <>
+     <Container>
+       {/* 添加購物車按鈕 */}
+       <button 
+        onClick={toggleCart}
+        className="fixed right-4 top-4 z-50 p-2 bg-blue-500 text-white rounded-full"
+      >
+        🛒
+      </button>
       <TopBar>
         <ItemCount>共 {toys.length} 項商品</ItemCount>
         <Controls>
           <ViewButton>
-            <span>☰</span>
-          </ViewButton>
+             <span>☰</span>
+             </ViewButton>
           <ViewButton>
             <span>▤</span>
-          </ViewButton>
-          <SortSelect defaultValue="最新上架">
-            <option>最新上架</option>
-            <option>價格由高到低</option>
-            <option>價格由低到高</option>
-          </SortSelect>
+             </ViewButton>
+            <SortSelect defaultValue="最新上架">
+              <option>最新上架</option>
+              <option>價格由高到低</option>
+               <option>價格由低到高</option>
+            </SortSelect>
         </Controls>
       </TopBar>
-
       <ProductGrid>
         {toys.map((toy) => (
-          <ProductCard key={toy.id}>
-            <ImageWrapper>
-              <Image
-                src={toy.imageUrl}
-                alt={toy.name}
-                fill
-                style={{ objectFit: 'cover' }}
-              />
-            </ImageWrapper>
-            <ProductInfo>
-              <ProductName>{toy.name}</ProductName>
-              <Price>{toy.price}</Price>
-            </ProductInfo>
-            <ActionBar>
-              <IconButton>❤️</IconButton>
-              <IconButton>🛒</IconButton>
-            </ActionBar>
-          </ProductCard>
+          <ProductCardItem key={toy.id} toy={toy} />
         ))}
       </ProductGrid>
     </Container>
+    <CartSidebar />
+    </>
   );
 }
+

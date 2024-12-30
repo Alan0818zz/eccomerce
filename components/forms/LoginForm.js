@@ -1,7 +1,9 @@
 'use client'
 import { useFormStatus } from 'react-dom'
 import { useActionState } from 'react'
+import { useEffect } from 'react'  // 添加這行
 import { loginAction } from '@/app/data/actions/auth-actions'
+import { useRouter } from 'next/navigation'  // 添加這行
 import styled from 'styled-components'
 import Link from 'next/link'
 
@@ -148,8 +150,14 @@ const Footer = styled.div`
 `
 
 export function SigninForm() {
+  const router = useRouter()  // 添加這行
   const [state, action] = useActionState(loginAction, undefined)
-
+  
+  useEffect(() => {
+    if (state?.success) {
+      router.push('/')
+    }
+  }, [state, router])
   return (
     <FormContainer action={action}>
       <FormHeader>
@@ -202,24 +210,3 @@ function SubmitButton() {
   )
 }
 
-// 可以添加忘記密碼的連結
-const ForgotPassword = styled.div`
-  text-align: right;
-  margin-top: -1rem;
-  margin-bottom: 1rem;
-  
-  a {
-    color: #4a90e2;
-    font-size: 0.85rem;
-    text-decoration: none;
-    
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-`
-
-// 如果需要，可以在密碼欄位下方添加忘記密碼連結：
-{/* <ForgotPassword>
-  <Link href="/forgot-password">忘記密碼？</Link>
-</ForgotPassword> */}
