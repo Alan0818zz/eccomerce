@@ -203,7 +203,7 @@ export default function ToysCollectionPage() {
         ))}
       </ProductGrid>
     </Container>
-    <CartSidebar />
+
     </>
   );
 }
