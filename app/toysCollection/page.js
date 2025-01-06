@@ -1,9 +1,7 @@
 'use client';
 import styled from 'styled-components';
 import Image from 'next/image';
-import Link from 'next/link'
-import AddToCart from '@/components/AddToCart';
-import CartSidebar from '@/components/cart/CartSidebar';
+import AddToCart from '@/components/cart/AddToCart';
 import { useCart } from '@/context/cart-context'
 const toys = [
     {

@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useReducer } from 'react'
+import { createContext, useContext, useReducer, useEffect, useState } from 'react'
 
 const CartContext = createContext()
 
@@ -9,8 +9,22 @@ const initialState = {
   total: 0,
   isOpen: false
 }
-
+// 從 localStorage 獲取初始狀態
+const getInitialState = () => {
+  if (typeof window === 'undefined') {
+    return initialState
+  }
+  
+  try {
+    const savedCart = localStorage.getItem('cart')
+    return savedCart ? JSON.parse(savedCart) : initialState
+  } catch (error) {
+    console.error('Error reading from localStorage:', error)
+    return initialState
+  }
+}
 function cartReducer(state, action) {
+
   switch (action.type) {
     case 'ADD_ITEM': {
       const existingItemIndex = state.items.findIndex(
@@ -71,8 +85,33 @@ function calculateTotal(items) {
 }
 
 export function CartProvider({ children }) {
-  const [state, dispatch] = useReducer(cartReducer, initialState)
+  const [state, dispatch] = useReducer(cartReducer, getInitialState())
+  const [isInitialized, setIsInitialized] = useState(false)
+  useEffect(() => {
+    if (!isInitialized) {
+      const savedState = getInitialState()
+      if (savedState !== initialState) {
+        dispatch({ type: 'INITIALIZE', payload: savedState })
+      }
+      setIsInitialized(true)
+    }
+  }, [isInitialized])
 
+  useEffect(() => {
+    if (isInitialized && typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('cart', JSON.stringify(state))
+      } catch (error) {
+        console.error('Error saving to localStorage:', error)
+      }
+    }
+  }, [state, isInitialized])
+  // 當 state 改變時，更新 localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('cart', JSON.stringify(state))
+    }
+  }, [state])
   const addItem = (item) => {
     dispatch({ type: 'ADD_ITEM', payload: item })
   }

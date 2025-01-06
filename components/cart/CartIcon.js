@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { IconLink } from './HeaderStyles';
+import { IconLink } from '../Headers/HeaderStyles';
 
 export function CartIcon({ count = 0 }) {
   return (

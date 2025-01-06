@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from '@/hooks/useAuth';
 import  UserDropdownMenu  from './Headers/UserDropdownMenu';
-import { CartIcon } from './Headers/CartIcon';
+import { CartIcon } from './cart/CartIcon';
 import { useState} from 'react';
 import SearchBar from './Headers/SearchBar';  
 import {

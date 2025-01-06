@@ -6,7 +6,7 @@ import styled from "styled-components";
 const Menus = styled.li`
   position: relative;
   font-size: 14px;
-  ${props => props.depthLevel > 0 && `
+  ${props => props.$depthLevel > 0 && `
     padding-left: 10px;
   `}
 `;
@@ -22,7 +22,7 @@ const Button = styled.button`
   width: 100%;
   padding: 0.7rem 1rem; 
   justify-content: space-between;
-  ${props => props.depthLevel > 0 && `
+  ${props => props.$depthLevel > 0 && `
     &::after {
       content: '→';
       margin-left: auto;
@@ -69,7 +69,7 @@ const MenuItems = ({ items, depthLevel }) => {
         <Menus className="menu-items" ref={ref}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            depthLevel={depthLevel}>
+            $depthLevel={depthLevel}>
             {items.submenu ? (
                 <>
                     <Button

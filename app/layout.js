@@ -3,6 +3,7 @@ import '@/styles/globals.css';
 import Header from '@/components/Header';  // 引入 Header 組件
 import { CartProvider } from '@/context/cart-context'
 import { Providers } from '@/components/provider'
+import Footer from '@/components/footer'
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
           <Header />
           {children}
         </CartProvider>
+        <Footer />
        </Providers>
       </body>
     </html>

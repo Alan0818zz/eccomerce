@@ -7,7 +7,7 @@ export default function AddToCart({ product }) {
 
   const handleAddToCart = () => {
     addItem(product)
-    console.log('Added to cart:', product) // 添加調試日誌
+    console.log('Added to cart:', product) 
   }
 
   return (
