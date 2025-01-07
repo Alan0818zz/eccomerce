@@ -79,11 +79,10 @@ export default function Comments({ productId }) {
         <div style={{ border: '1px solid #ddd', padding: '20px', borderRadius: '8px' }}>
             <h3>評論與評分</h3>
 
-            {/* List of Comments and Ratings */}
             <ul>
                 {comments.map((comment, index) => (
-                    <li key={comment.rating_id} style={{ marginBottom: '10px' }}>
-                        <strong>{comment.author || `Anonymous User${index + 1}`}</strong> <span>({new Date(comment.rating_date).toLocaleString()})</span>
+                    <li key={comment.rating_id|| `temp-key-${index}`} style={{ marginBottom: '10px' }}>
+                        <strong>{`Alan`}</strong> <span>({new Date(comment.rating_date).toLocaleString()})</span>
                         <p>評分: {'★'.repeat(comment.rating_score)}{'☆'.repeat(5 - comment.rating_score)}</p>
                         {comment.rating_comment && <p>評論: {comment.rating_comment}</p>}
                     </li>

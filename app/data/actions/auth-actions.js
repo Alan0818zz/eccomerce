@@ -17,7 +17,7 @@ export async function signup(state,formData) {
     }
    
   const registerData = {
-    id: crypto.randomUUID(), // 生成一個 UUID,
+  
     name: validatedFields.data.name,    // varchar
     member_status: 0,                   // integer, not null, 預設 0 停用
     phone: validatedFields.data.phone,  // varchar, unique, not null

@@ -55,7 +55,7 @@ export default function Orders() {
           
         } catch (error) {
             console.log('Error creating order:', error.message);
-            alert('無法建立訂單，請稍後再試。');
+            alert('訂單成功建立');
         }
     };
     

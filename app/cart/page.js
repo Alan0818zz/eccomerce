@@ -108,12 +108,7 @@ export default function CartPage() {
       <CartLayout>
         {/* 左側商品列表 */}
         <CartItems>
-          <LoginPrompt>
-            <span>登入會員，立即享有完整的會員專屬優惠</span>
-            <Button color="primary" variant="flat">
-              登入
-            </Button>
-          </LoginPrompt>
+          
           
           {items.map(item => (
             <CartItem key={item.id} item={item} />
