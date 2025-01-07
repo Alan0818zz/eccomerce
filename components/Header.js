@@ -2,10 +2,11 @@
 import dynamic from 'next/dynamic';
 import Image from "next/image";
 import Link from "next/link";
-import { useAuth } from '@/hooks/useAuth';
+import { getCurrentUser, logout } from '@/app/data/services/auth-service';
 import  UserDropdownMenu  from './Headers/UserDropdownMenu';
 import { CartIcon } from './cart/CartIcon';
-import { useState} from 'react';
+import { useState , useEffect} from 'react';
+import { useAuth } from '@/hooks/useAuth';
 import SearchBar from './Headers/SearchBar';  
 import {
   StyledHeader,
@@ -20,16 +21,30 @@ import {
 const DynamicNavbar = dynamic(() => import("@/components/Navbar"), { ssr: false });
 
 export default function Header() {
-  const { user, isLoading, logout } = useAuth();
+  const {isLoading, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    console.log('useEffect triggered'); // 檢查 useEffect 是否觸發
+    fetchUser();
+  }, [user]);
+  const fetchUser = async () => {
+    try {
+      console.log('Fetching user...');
+      const { isAuthenticated, user } = await getCurrentUser();
+      console.log('Fetch result:', { isAuthenticated, user });
+      setUser(isAuthenticated ? user : null);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    }
+  };
   const handleLogout = async () => {
     const success = await logout();
     if (success) {
       setIsDropdownOpen(false);
     }
   };
-
   return (
     <div>
       <StyledHeader>

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Button } from "@nextui-org/react"
 import { useCart } from '@/context/cart-context'
 import CartItem from '@/components/cart/CartItem'
-
+import { useRouter } from 'next/navigation'
 const PageContainer = styled.div`
   padding: 2rem;
   max-width: 1200px;
@@ -97,7 +97,10 @@ const CheckoutButton = styled(Button)`
 
 export default function CartPage() {
   const { items, total } = useCart()
-
+  const router = useRouter();
+  const handleCheckout = () => {
+    router.push('/checkout');
+  };
   return (
     <PageContainer>
       <CartTitle>購物車</CartTitle>
@@ -143,7 +146,7 @@ export default function CartPage() {
           
           </TotalSection>
 
-          <CheckoutButton size="lg">
+          <CheckoutButton size="lg" onClick={handleCheckout}>
             登入並結帳
           </CheckoutButton>
         </CartSummary>

@@ -5,7 +5,7 @@ const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:80';
 export async function register(registerData) {
   try {
     // console.log('Sending data:', registerData); // 添加這行來檢查
-    const response = await fetch(`${API_URL}/api/auth/register`, {
+    const response = await fetch(`${API_URL}/members/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ export async function register(registerData) {
 // 登入
 export async function login(loginData) {
   try {
-    const response = await fetch(`${API_URL}/api/auth/login`, {
+    const response = await fetch(`${API_URL}/members/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -58,19 +58,17 @@ export async function login(loginData) {
 // 取得使用者詳細資料
 export async function getUserDetails(userId) {
   try {
-    const response = await fetch(`${API_URL}/api/members/get?id=${userId}`, {
+    const response = await fetch(`${API_URL}/members/get?email=${userId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     });
-
     const data = await response.json();
-    
     return {
       status: response.ok,
       message: data.message || '',
-      data: data.data
+      data: data
     };
   } catch (error) {
     return {

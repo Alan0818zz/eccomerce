@@ -10,9 +10,8 @@ import {
 
 export default function UserDropdownMenu({ user, isOpen, setIsOpen, onLogout }) {
   const dropdownRef = useRef(null);
-  
+  console.log(user);
   useClickOutside(dropdownRef, () => setIsOpen(false));
-
   return (
     <UserDropdown ref={dropdownRef}>
       <IconLink 
@@ -25,7 +24,7 @@ export default function UserDropdownMenu({ user, isOpen, setIsOpen, onLogout }) 
       <DropdownContent $isOpen={isOpen}>
         {user ? (
           <>
-            <DropdownItem as="div">歡迎, {user.name || '會員'}</DropdownItem>
+            <DropdownItem as="div">歡迎, {user || '會員'}</DropdownItem>
             <DropdownItem href="/orders">訂單查詢</DropdownItem>
             <DropdownItem href="/member">會員專區</DropdownItem>
             <DropdownItem href="/favorites">我的收藏</DropdownItem>

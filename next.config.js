@@ -4,9 +4,10 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
-    domains: ['picsum.photos'],
+    domains: ['alanluo-next-ecommerce.s3.amazonaws.com'],
   },
   output: 'standalone',
+  reactStrictMode: true,
 }
 
 module.exports = nextConfig

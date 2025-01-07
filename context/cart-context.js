@@ -111,7 +111,7 @@ export function CartProvider({ children }) {
     if (typeof window !== 'undefined') {
       localStorage.setItem('cart', JSON.stringify(state))
     }
-  }, [state])
+  }, [])
   const addItem = (item) => {
     dispatch({ type: 'ADD_ITEM', payload: item })
   }

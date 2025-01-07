@@ -26,11 +26,11 @@ export async function register(registerData) {
 export async function login(loginData) {
     try {
         const response = await apiLogin(loginData)
-       
+        
         if (response.status) {
-          if (response.data?.id) {
+          if (response.data?.email) {
             // 使用session替代原本的token處理
-            await createSession(response.data.id);
+            await createSession(response.data.email);
 
           }
           return {
@@ -39,7 +39,7 @@ export async function login(loginData) {
           }
         }
         
-        console.error('登入失敗:', response.message)
+        //console.error('登入失敗:', response.message)
         return {
           success: false,
           message: response.message
@@ -55,26 +55,23 @@ export async function login(loginData) {
 // 添加檢查登入狀態的函數
 export async function getCurrentUser() {
   const { isAuthenticated, userId } = await checkAuth()
-  
   if (!isAuthenticated) {
     return {
       isAuthenticated: false,
       user: null
     }
   }
-
   try {
-
     const userDetails = await getUserDetails(userId)
     return {
       isAuthenticated: true,
-      user: userDetails
+      user: userDetails.data.name
     }
   } catch (error) {
     console.error('獲取用戶信息失敗:', error)
     return {
-      isAuthenticated: true,
-      user: { id: userId }
+      isAuthenticated: false,
+      user: { id: null }
     }
   }
 }

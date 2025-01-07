@@ -91,5 +91,4 @@ export async function checkAuth() {
 export async function deleteSession() {
   const cookieStore = await cookies()
   cookieStore.delete(cookie.name)
-  redirect('/login')
 }

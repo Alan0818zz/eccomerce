@@ -92,7 +92,7 @@ export default function CartItem({ item }) {
       <ImageContainer>
         <Image
           src={item.image}
-          alt={item.name}
+          alt={item.productName}
           width={300}
           height={300}
           className="object-cover"
@@ -106,7 +106,7 @@ export default function CartItem({ item }) {
       <ItemInfo>
         <ItemHeader>
           <div>
-            <ItemName>{item.name}</ItemName>
+            <ItemName>{item.productName}</ItemName>
             <ItemPrice>NT${item.price}</ItemPrice>
           </div>
           <DeleteButton onClick={() => removeItem(item.id)}>

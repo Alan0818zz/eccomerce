@@ -40,32 +40,22 @@ export async function signup(state,formData) {
   return { success: true };
 }
 export async function loginAction(prevState, formData) {
+   
     try {
       // 表單驗證
       const email = formData.get('email');
       const password = formData.get('password');
       
-      // if (!email || !password) {
-      //   return {
-      //     success: false,
-      //     error: '請填寫完整的登入資訊'
-      //   }
-      // }
-  
-      // // 電子郵件格式驗證
-      // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      // if (!emailRegex.test(email)) {
-      //   return {
-      //     success: false,
-      //     error: '請輸入有效的電子郵件地址'
-      //   }
-      // }
-  
+      if (!email || !password) {
+        return {
+          success: false,
+          error: '請填寫完整的登入資訊'
+        }
+      }
       const loginData = {
-        id: email,
+        email: email,
         password: password
       }
-      // console.log(loginData);
       const result = await login(loginData);
       
       if (!result.success) {

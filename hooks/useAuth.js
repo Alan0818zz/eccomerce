@@ -4,17 +4,20 @@ import { getCurrentUser, logout } from '@/app/data/services/auth-service';
 export function useAuth() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  
   useEffect(() => {
+    console.log('useEffect triggered'); // 新增
     fetchUser();
   }, []);
 
   const fetchUser = async () => {
     try {
+      console.log('Fetching user...');
       const { isAuthenticated, user } = await getCurrentUser();
+      console.log('Fetch result:', { isAuthenticated, user });
       setUser(isAuthenticated ? user : null);
     } catch (error) {
-      console.error('獲取用戶信息失敗:', error);
+      console.error('Error fetching user:', error);
     } finally {
       setIsLoading(false);
     }
@@ -33,7 +36,6 @@ export function useAuth() {
       return false;
     }
   };
-
   return {
     user,
     isLoading,
