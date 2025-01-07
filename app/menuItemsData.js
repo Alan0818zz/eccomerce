@@ -4,14 +4,24 @@ export  const menuItemsData = [
         submenu:[
             {
                 title:'全站商品',
+                submenu:[
+                    // {title:'【預購專區】'},
+                    {title:'【鋼彈模型】'},
+                    {title:'【熱門作品】'},
+                    {title:'【閃電霹靂車】'},
+                    {title:'【遙控模型】'},
+                    {title:'【NEXTEE】'},
+                    {title:'【最新上架】'},
+                    {title:'【現貨專區】'},
+                    {title:'【經典機器人】'},
+                    {title:'【組裝模型】'},
+                    {title:'【查詢訂單】'},
+                    ]
             },
             {
-                title:'【現貨專區】',
-                submenu:[
-                    {
-                        title:'【預購專區】'
-                    }
-                ],
+                title:'【現貨專區】'
+                
+                
             },
         ],
     },

@@ -136,9 +136,7 @@ const IconButton = styled.button`
     opacity: 0.7;
   }
 `;
-const LogoWrapper = styled.div`
-  flex: 0 0 auto;
-`;
+
 
 const ProductCardItem = ({ toy }) => {
   return (

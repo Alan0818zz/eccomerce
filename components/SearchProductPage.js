@@ -1,4 +1,5 @@
 'use client';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
@@ -81,44 +82,47 @@ const Container = styled.div`
    position: relative; // 添加這行
 `;
 
-export default function AllProductPage() {
+
+export default function SearchProductPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const YOUR_API_BASE_URL = 'http://localhost:80';
+  const searchParams = useSearchParams();
+  const query = searchParams.get('query'); // `name` 對應的是查詢參數的 key
+  console.log(query)
   useEffect(() => {
-   
+    if (!query) return; // 如果 query 為空，則不執行請求
+
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${YOUR_API_BASE_URL}/products`);
+        const response = await fetch(`http://localhost:80/products/search?name=${(query)}`);
+        console.log(response)
         if (!response.ok) {
-          console.error('API Error: no id', response.status);
+          throw new Error(`Error: ${response.statusText}`);
         }
         const data = await response.json();
-
-        // res.json(data);
         setProducts(data);
       } catch (err) {
+        // console.error(err);
         setError(err.message);
       } finally {
+        // console.error("error");
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [query]);
 
   if (loading) return <p>Loading products...</p>;
   if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
-  
+
   return (
-    <>
-    <Container>
     <ProductGrid>
       {products.map((product) => (
         <ProductCard key={product.id}>
           <Link href={`/product/${product.id}`}>
-            <ImageWrapper>
+          <ImageWrapper>
                 <img
                     src={product.image}
                     alt={product.productName}
@@ -130,15 +134,9 @@ export default function AllProductPage() {
               <Price>NT${product.price}</Price>
             </ProductInfo>
           </Link>
-          <IconButton>❤️</IconButton>
           <AddToCart product={product} />
         </ProductCard>
-        
       ))}
-
-     </ProductGrid>
-    </Container>
-    </>
-    
+    </ProductGrid>
   );
 }

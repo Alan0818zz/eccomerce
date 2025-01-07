@@ -7,7 +7,7 @@ export default function AddToCart({ product }) {
 
   const handleAddToCart = () => {
     addItem(product)
-    alert(`已將 1件 ${product.productName} 加入購物車`);
+    alert(`已將${product.productName} 加入購物車`);
     console.log('Added to cart:', product) 
   }
 

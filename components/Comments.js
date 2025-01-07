@@ -3,9 +3,8 @@ import { useState, useEffect } from 'react';
 
 export default function Comments({ productId }) {
     const [comments, setComments] = useState([]);
-    const [author, setAuthor] = useState('');
     const [text, setText] = useState('');
-    const [rating, setRating] = useState(0); // Track the selected rating
+    const [rating, setRating] = useState(0); // 評分
 
     // Fetch comments and ratings for the product
     useEffect(() => {
@@ -21,47 +20,79 @@ export default function Comments({ productId }) {
     // Add a new rating and comment
     const addComment = async () => {
         if (rating === 0) {
-            alert('Please select a rating before submitting.');
+            alert('請選擇星級評分再提交。');
             return;
         }
 
+        // 動態生成評論者名字
+        const author = `user${comments.length + 1}`;
+
         const newComment = {
             "product": { "id": productId },    // 符合實體關係
-            "member": { "id": 1231 },     // 符合實體關係
-            "order": { "id": 123 },      // 符合實體關係
+            "member": { "id": 2 },     // 符合實體關係
+            "order": { "id": 2 },      // 符合實體關係
             "ratingScore": rating,
-            "ratingComment": text.toString()
+            "ratingComment": text.toString(),
+            "author": author, // 新增者名字
         };
+
         console.log("Payload Sent:", newComment);
-        const res = await fetch('http://localhost:80/ratings', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newComment),
-        });
-        if (!res.ok) {
-            const errorText = await res.text(); // Capture the error message from the backend
-            throw new Error(`HTTP error! status: ${res.status}, message: ${errorText}`);
+
+        try {
+            const res = await fetch('http://localhost:80/ratings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newComment),
+            });
+
+            if (!res.ok) {
+                const errorText = await res.text(); // 後端返回錯誤訊息
+                throw new Error(`HTTP error! status: ${res.status}, message: ${errorText}`);
+            }
+
+            const savedComment = await res.json(); // 後端返回新增的評論資料
+
+            // 更新評論列表（將新評論添加到現有的評論中）
+            setComments((prevComments) => [
+                {
+                    rating_id: savedComment.id, // 假設後端返回新增評論的 ID
+                    member_id: 1231,
+                    rating_date: new Date().toISOString(),
+                    rating_score: rating,
+                    rating_comment: text,
+                    author: author, // 新增者名字
+                },
+                ...prevComments,
+            ]);
+
+            // 清空表單
+            setText('');
+            setRating(0);
+            alert('評論已成功提交！');
+        } catch (error) {
+            // console.error('Error creating comment:', error.message);
+            alert('無法提交評論，請稍後再試。');
         }
     };
 
     return (
         <div style={{ border: '1px solid #ddd', padding: '20px', borderRadius: '8px' }}>
-            <h3>Comments & Ratings</h3>
+            <h3>評論與評分</h3>
 
             {/* List of Comments and Ratings */}
             <ul>
-                {comments.map((comment) => (
+                {comments.map((comment, index) => (
                     <li key={comment.rating_id} style={{ marginBottom: '10px' }}>
-                        <strong>Member ID: {comment.member_id}</strong> <span>({new Date(comment.rating_date).toLocaleString()})</span>
-                        <p>Rating: {'★'.repeat(comment.rating_score)}{'☆'.repeat(5 - comment.rating_score)}</p>
-                        {comment.rating_comment && <p>Comment: {comment.rating_comment}</p>}
+                        <strong>{comment.author || `Anonymous User${index + 1}`}</strong> <span>({new Date(comment.rating_date).toLocaleString()})</span>
+                        <p>評分: {'★'.repeat(comment.rating_score)}{'☆'.repeat(5 - comment.rating_score)}</p>
+                        {comment.rating_comment && <p>評論: {comment.rating_comment}</p>}
                     </li>
                 ))}
             </ul>
 
             {/* Add Rating and Comment Form */}
             <div style={{ marginTop: '20px' }}>
-                <h4>Rate this Product</h4>
+                <h4>評分這個產品</h4>
                 <div style={{ marginBottom: '10px' }}>
                     {[1, 2, 3, 4, 5].map((star) => (
                         <button
@@ -80,16 +111,9 @@ export default function Comments({ productId }) {
                     ))}
                 </div>
 
-                <h4>Add a Comment (Optional)</h4>
-                <input
-                    type="text"
-                    placeholder="Your Name"
-                    value={author}
-                    onChange={(e) => setAuthor(e.target.value)}
-                    style={{ display: 'block', marginBottom: '10px', padding: '5px', width: '100%' }}
-                />
+                <h4>評論內容 (可選填)</h4>
                 <textarea
-                    placeholder="Your Comment"
+                    placeholder="評論"
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     style={{ display: 'block', marginBottom: '10px', padding: '5px', width: '100%' }}

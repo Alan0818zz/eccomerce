@@ -135,7 +135,7 @@ export default function Footer() {
           <Column>
             <img src="/logo.png" alt="華海模型" style={{ height: '50px', marginBottom: '20px' }} />
             <SocialLinks>
-              <SocialIcon $bg="#1877f2" href="#">
+              <SocialIcon $bg="#1877f2" href="https://www.facebook.com/groups/1170016847292338/?hoisted_section_header_type=recently_seen&multi_permalinks=1537625943864758">
                 <i className="fab fa-facebook-f" />
               </SocialIcon>
               <SocialIcon $bg="#00b900" href="#">
@@ -170,7 +170,7 @@ export default function Footer() {
         </GridContainer>
 
         <Copyright>
-          <p>© 2024 by 張家榮</p>
+          <p>© 2024 by 我愛Ameila</p>
         </Copyright>
       </Container>
     </FooterWrapper>

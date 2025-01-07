@@ -1,26 +1,39 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import AddToCart from '@/components/cart/AddToCart';
+
+
 const ProductGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* Default: 4 columns */
   gap: 20px;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for medium screens */
+  }
+
+  @media (max-width: 800px) {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller screens */
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr; /* 1 column for very small screens */
+  }
 `;
+
 const ProductCard = styled.div`
   border: 1px solid #eee;
   border-radius: 8px;
   overflow: hidden;
-  transition: all 0.3s ease;
-  background: white;
-  
+  transition: transform 0.2s;
+
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   }
 `;
-
 
 const ImageWrapper = styled.div`
   position: relative;
@@ -62,7 +75,11 @@ const Price = styled.p`
   margin: 8px 0;
 `;
 
-
+const ActionBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 12px 12px;
+`;
 
 const IconButton = styled.button`
   background: none;
@@ -80,39 +97,65 @@ const Container = styled.div`
   padding: 20px;
    position: relative; // 添加這行
 `;
-
-export default function AllProductPage() {
+export default function PartialProductPage({ slug }) {
   const [products, setProducts] = useState([]);
+  const [categoryName, setCategoryName] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const YOUR_API_BASE_URL = 'http://localhost:80';
+
+  const slugToIdMap = {
+    "gunpla": 3,
+    "hot-items": 4,
+    "rc-cars": 5,
+    "remote-control": 6,
+    "nextee": 7,
+    "new-arrivals": 8,
+    "premium": 9,
+    "classic-robots": 10,
+    "model-kits":11,
+    
+  };
+
+  const categoryId = slugToIdMap[slug]; // 將 slug 映射到 id
+  console.log(categoryId);
   useEffect(() => {
-   
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${YOUR_API_BASE_URL}/products`);
+        if (!categoryId) {
+          throw new Error(`未找到對應的分類 ID: ${slug}`);
+        }
+        
+        const response = await fetch(`http://localhost:80/categories/slug/${categoryId}`);
+        
         if (!response.ok) {
-          console.error('API Error: no id', response.status);
+          throw new Error(`Error: ${response.statusText}`);
         }
         const data = await response.json();
-
-        // res.json(data);
-        setProducts(data);
+        console.log(data);
+        setProducts(data.products || []);
+        setCategoryName(data.categoryName || '');
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
+    console.log(categoryId, slug)
+    if (categoryId) {
+      fetchProducts();
+    }
+  }, [categoryId]);
 
-    fetchProducts();
-  }, []);
 
   if (loading) return <p>Loading products...</p>;
   if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
   
   return (
     <>
+    <h1 className="text-2xl font-bold mb-6">
+        {/* 这里可以根据slug显示对应的分类标题 */}
+        {categoryName} 分類頁面
+      </h1>
     <Container>
     <ProductGrid>
       {products.map((product) => (
@@ -129,6 +172,10 @@ export default function AllProductPage() {
               <ProductName>{product.productName}</ProductName>
               <Price>NT${product.price}</Price>
             </ProductInfo>
+            <ActionBar>
+              
+              {/* <IconButton>🛒</IconButton> */}
+            </ActionBar>
           </Link>
           <IconButton>❤️</IconButton>
           <AddToCart product={product} />
@@ -136,9 +183,8 @@ export default function AllProductPage() {
         
       ))}
 
-     </ProductGrid>
+    </ProductGrid>
     </Container>
     </>
-    
   );
 }
