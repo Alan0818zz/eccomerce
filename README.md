@@ -35,26 +35,3 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-src/
-├── app/
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/
-│   ├── layout/
-│   │   ├── header.tsx
-│   │   ├── footer.tsx
-│   │   └── navigation/
-│   │       ├── category-dropdown.tsx
-│   │       ├── search-bar.tsx
-│   │       └── user-actions.tsx
-│   ├── product/
-│   │   ├── product-card.tsx
-│   │   └── product-grid.tsx
-│   └── ui/
-│       ├── button.tsx (already exists)
-│       └── input.tsx (already exists)
-├── lib/
-│   └── constants/
-│       └── navigation.ts
-└── types/
-    └── navigation.ts
